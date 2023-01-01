@@ -2,11 +2,11 @@
     "name": "pokemongo-backend-challenge",
     "version": "1.0.0",
     "description": "",
-    "main": "dist/app.js",
+    "main": "dist/app.cjs",
     "scripts": {
         "build": "tsup src",
-        "start": "node dist/app.js",
-        "dev": "concurrently \"tsup src --watch\" \"nodemon dist/app.js\""
+        "start": "node dist/app.cjs",
+        "dev": "concurrently \"tsup src --watch\" \"nodemon dist/app.cjs\""
     },
     "type": "module",
     "keywords": [],
