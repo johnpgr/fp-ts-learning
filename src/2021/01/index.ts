@@ -2,14 +2,6 @@ import * as Opt from "fp-ts/lib/Option.js";
 import { pipe } from "fp-ts/lib/function.js";
 import { Option } from "fp-ts/lib/Option.js";
 
-function parseInput(input: Option<string>): Option<number[]> {
-    return pipe(
-        input,
-        Opt.map((input) => input.split("\n")),
-        Opt.map((input) => input.map((x) => parseInt(x)))
-    );
-}
-
 export function part1(input: Option<string>): number {
     return pipe(
         input,
@@ -28,6 +20,14 @@ export function part2(input: Option<string>): number {
         calculateDifference,
         countIncreases,
         Opt.getOrElse(() => 0)
+    );
+}
+
+function parseInput(input: Option<string>): Option<number[]> {
+    return pipe(
+        input,
+        Opt.map((input) => input.split("\n")),
+        Opt.map((input) => input.map((x) => parseInt(x)))
     );
 }
 
