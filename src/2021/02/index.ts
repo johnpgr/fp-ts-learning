@@ -1,7 +1,6 @@
 import { pipe } from "fp-ts/lib/function.js";
 import { Option } from "fp-ts/lib/Option.js";
 import * as Opt from "fp-ts/lib/Option.js";
-import * as Arr from "fp-ts/lib/Array.js";
 
 export function part1(input: Option<string>): number {
     return pipe(
