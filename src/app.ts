@@ -19,3 +19,4 @@ import { part1, part2 } from "./2021/02/index.js";
 console.log("day 2, part 1 test input:\t", part1(testInput));
 console.log("day 2, part 1 real input:\t", part1(input));
 console.log("day 2, part 2 test input:\t", part2(testInput));
+console.log("day 2, part 2 real input: \t", part2(input));

@@ -16,7 +16,7 @@ export function part2(input: Option<string>): number {
     return pipe(
         input,
         parseInput,
-        calculatePositionPt2,
+        parseSteps,
         Opt.getOrElse(() => 0)
     );
 }
@@ -68,61 +68,50 @@ function calculatePosition(input: Option<Instruction[]>): Option<number> {
     );
 }
 
-function calculatePositionPt2(input: Option<Instruction[]>): Option<number> {
+export type Step = {
+    readonly currInstruction: Instruction;
+    currHorizontal: number;
+    currDepth: number;
+    currAim: number;
+};
+
+function parseSteps(instructions: Option<Instruction[]>): Option<number> {
     return pipe(
-        input,
-        Opt.map((input) =>
-            input.map((instruction, i, instructions) => {
-                return {
-                    forward:
-                        instruction._type === "forward" ? instruction.value : 0,
-                    aim: pipe(
-                        Arr.findLastIndex(
-                            (ins: Instruction) => ins._type === "depth"
-                        )(instructions.slice(0, i + 1)),
-                        Opt.map((i) => {
-                            return {
-                                i,
-                                value: instructions[i].value,
-                            };
-                        }),
-                        Opt.getOrElse(() => {
-                            return { i: 0, value: 0 };
-                        })
-                    ),
-                };
-            })
-        ),
-        Opt.map((input) => {
-            return input.reduce(
+        instructions,
+        Opt.map((instr) => {
+            return instr.reduce(
                 (acc, curr) => {
-                    console.log({
-                        forward: curr.forward,
-                        aim: {
-                            value:
-                                curr.aim.i !== acc.aim.i
-                                    ? curr.aim.value + acc.aim.value
-                                    : curr.aim.value,
-                            i: curr.aim.i,
-                        },
-                        horizontal: curr.forward + acc.horizontal,
-                        depth: acc.depth + curr.aim.value * curr.forward,
-                    });
+                    const currAim =
+                        curr._type === "depth"
+                            ? acc.currAim + curr.value
+                            : acc.currAim;
+                    const currDepth =
+                        curr._type === "forward"
+                            ? acc.currDepth + curr.value * currAim
+                            : acc.currDepth;
+                    const currHorizontal =
+                        curr._type === "forward"
+                            ? acc.currHorizontal + curr.value
+                            : acc.currHorizontal;
+                    // console.log({
+                    //     curr,
+                    //     currAim,
+                    //     currDepth,
+                    //     currHorizontal,
+                    // });
                     return {
-                        horizontal: curr.forward + acc.horizontal,
-                        aim: {
-                            value:
-                                curr.aim.i !== acc.aim.i
-                                    ? curr.aim.value + acc.aim.value
-                                    : curr.aim.value,
-                            i: curr.aim.i,
-                        },
-                        depth: acc.depth + curr.aim.value * curr.forward,
+                        currAim,
+                        currDepth,
+                        currHorizontal,
                     };
                 },
-                { horizontal: 0, aim: { i: 0, value: 0 }, depth: 0 }
+                {
+                    currAim: 0,
+                    currDepth: 0,
+                    currHorizontal: 0,
+                }
             );
         }),
-        Opt.map((input) => input.depth * input.horizontal)
+        Opt.map((steps) => steps.currDepth * steps.currHorizontal)
     );
 }
