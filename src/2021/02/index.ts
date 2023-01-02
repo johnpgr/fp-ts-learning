@@ -67,13 +67,6 @@ function calculatePosition(input: Option<Instruction[]>): Option<number> {
     );
 }
 
-export type Step = {
-    readonly currInstruction: Instruction;
-    currHorizontal: number;
-    currDepth: number;
-    currAim: number;
-};
-
 function parseSteps(instructions: Option<Instruction[]>): Option<number> {
     return pipe(
         instructions,
