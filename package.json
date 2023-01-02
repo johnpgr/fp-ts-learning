@@ -6,6 +6,7 @@
     "scripts": {
         "build": "tsup src",
         "start": "node dist/app.cjs",
+        "debug": "node --inspect-brk dist/app.cjs",
         "dev": "concurrently \"tsup src --watch\" \"nodemon dist/app.cjs\""
     },
     "type": "module",
